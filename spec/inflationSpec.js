@@ -52,4 +52,22 @@ describe("loss or gain to inflation", function() {
 
     expect(result).toEqual(0.03);
   });
+
+  it("inflation grows 1 point every month for 6 months", function() {
+    monthlyInflation = [1, 2, 3, 4, 5, 6];
+    salary = 100;
+
+    result = inflation.impact(salary, monthlyInflation);
+
+    expect(result).toEqual(-18.58);
+  });
+
+  it("inflation shrinks 1 point every month for 6 months", function() {
+    monthlyInflation = [-1, -2, -3, -4, -5, -6];
+    salary = 100;
+
+    result = inflation.impact(salary, monthlyInflation);
+
+    expect(result).toEqual(23.95);
+  });
 });
