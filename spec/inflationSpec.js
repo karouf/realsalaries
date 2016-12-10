@@ -7,4 +7,13 @@ describe("loss or gain to inflation", function() {
 
     expect(result).toEqual(-50);
   });
+
+  it("inflation steady at -50% for 1 month", function() {
+    monthlyInflation = [-50];
+    salary = 100;
+
+    result = inflation.impact(salary, monthlyInflation);
+
+    expect(result).toEqual(100);
+  });
 });
