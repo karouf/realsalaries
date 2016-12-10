@@ -70,4 +70,13 @@ describe("loss or gain to inflation", function() {
 
     expect(result).toEqual(23.95);
   });
+
+  it("real life example", function() {
+    monthlyInflation = [1.742614,-1.386395,2.242823,2.03575,2.201071,2.158202];
+    salary = 100;
+
+    result = inflation.impact(salary, monthlyInflation);
+
+    expect(result).toEqual(-8.49);
+  });
 });
