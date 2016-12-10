@@ -7,6 +7,6 @@ var inflation = {
     var realSalary = salary * (salary / idealSalary);
     var evolution = realSalary - salary;
 
-    return evolution;
+    return Math.round(evolution * 100) / 100;
   }
 };
