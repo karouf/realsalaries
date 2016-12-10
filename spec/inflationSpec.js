@@ -34,4 +34,22 @@ describe("loss or gain to inflation", function() {
 
     expect(result).toEqual(3.06);
   });
+
+  it("inflation steady at -1% for 3 months then 1% for 3 months", function() {
+    monthlyInflation = [-1, -1, -1, 1, 1, 1];
+    salary = 100;
+
+    result = inflation.impact(salary, monthlyInflation);
+
+    expect(result).toEqual(0.03);
+  });
+
+  it("inflation steady at 1% for 3 months then -1% for 3 months", function() {
+    monthlyInflation = [1, 1, 1, -1, -1, -1];
+    salary = 100;
+
+    result = inflation.impact(salary, monthlyInflation);
+
+    expect(result).toEqual(0.03);
+  });
 });
