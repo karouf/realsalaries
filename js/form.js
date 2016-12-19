@@ -12,11 +12,13 @@ var form = {
     var salary = form.getElementsByClassName("salary")[0];
     var lastRaiseMonth = form.getElementsByClassName("raise_month")[0];
     var lastRaiseYear = form.getElementsByClassName("raise_year")[0];
+    var country = form.getElementsByClassName("country")[0];
 
     return {
       salary: parseInt(salary.value),
       lastRaiseMonth: parseInt(lastRaiseMonth.value),
-      lastRaiseYear: parseInt(lastRaiseYear.value)
+      lastRaiseYear: parseInt(lastRaiseYear.value),
+      country: country.value
     };
   }
 }

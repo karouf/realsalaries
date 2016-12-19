@@ -33,4 +33,8 @@ describe("get user inputs", function() {
   it("returns the user last raise year", function() {
     expect(this.inputs.lastRaiseYear).toEqual(2008);
   });
+
+  it("returns the country the user lives in", function() {
+    expect(this.inputs.country).toEqual("CAN");
+  });
 });
