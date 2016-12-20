@@ -80,3 +80,13 @@ describe("loss or gain to inflation", function() {
     expect(result).toEqual(-8.49);
   });
 });
+
+describe("data", function() {
+  it("returns inflation data for the given country and period", function() {
+    var startPeriod = new Date(2015, 1, 1);
+    var endPeriod = new Date(2015, 3, 1);
+    var result = inflation.data("CAN", startPeriod, endPeriod);
+
+    expect(result).toEqual([0.9748172, 1.047542, 1.201923]);
+  });
+});
