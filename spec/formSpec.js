@@ -46,7 +46,7 @@ describe("update", function() {
   });
 
   it("sets inner text of the given element to the gain/loss to inflation", function() {
-    var baseTime = new Date(2015, 3, 1);
+    var baseTime = new Date(2015, 2, 1);
     jasmine.clock().mockDate(baseTime);
     $j("form .salary").val("100");
     $j("form .raise_month").val("1");

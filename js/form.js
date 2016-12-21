@@ -24,7 +24,7 @@ var form = {
   update: function(form, element) {
     var now = new Date();
     var inputs = this.userInputs(form);
-    var raiseDate = new Date(inputs.lastRaiseYear, inputs.lastRaiseMonth, 1);
+    var raiseDate = new Date(inputs.lastRaiseYear, inputs.lastRaiseMonth - 1, 1);
     var inflationData = inflation.data(inputs.country, raiseDate, now);
 
     impact = inflation.impact(inputs.salary, inflationData);

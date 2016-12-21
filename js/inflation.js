@@ -22,9 +22,9 @@ var inflation = {
     var url = "https://stats.oecd.org/sdmx-json/data/DP_LIVE/";
     url += country;
     url += ".CPI.TOT.AGRWTH.M/OECD?contentType=json&startPeriod=";
-    url += startPeriod.getFullYear() + "-" + startPeriod.getMonth().pad();
+    url += startPeriod.getFullYear() + "-" + (startPeriod.getMonth() + 1).pad();
     url += "&endPeriod=";
-    url += endPeriod.getFullYear() + "-" + endPeriod.getMonth().pad();
+    url += endPeriod.getFullYear() + "-" + (endPeriod.getMonth() + 1).pad();
 
     xmlHttp.open( "GET", url, false );
     xmlHttp.send( null );
