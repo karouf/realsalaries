@@ -38,3 +38,25 @@ describe("get user inputs", function() {
     expect(this.inputs.country).toEqual("CAN");
   });
 });
+
+describe("update", function() {
+  beforeEach(function () {
+    jasmine.getFixtures().fixturesPath = 'base/spec/javascripts/fixtures';
+    loadFixtures('form.html');
+  });
+
+  it("sets inner text of the given element to the gain/loss to inflation", function() {
+    var baseTime = new Date(2015, 3, 1);
+    jasmine.clock().mockDate(baseTime);
+    $j("form .salary").val("100");
+    $j("form .raise_month").val("1");
+    $j("form .raise_year").val("2015");
+    $j("form .country").val("CAN");
+
+    var theForm = document.getElementsByTagName("form")[0];
+    var element = document.getElementsByClassName("inflation-impact")[0];
+    form.update(theForm, element);
+
+    expect($j(".inflation-impact").text()).toEqual("-3.16");
+  });
+});
