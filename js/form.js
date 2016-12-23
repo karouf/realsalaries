@@ -4,9 +4,15 @@ var form = {
     var year = date.getFullYear();
     var monthInput = form.getElementsByClassName("raise_month")[0];
     var yearInput = form.getElementsByClassName("raise_year")[0];
+    var resultElement = document.getElementsByClassName("inflation-impact")[0];
+    var thisObject = this;
 
     monthInput.value = month;
     yearInput.value = year;
+
+    form.addEventListener("change", function() {
+      thisObject.update(form, resultElement);
+    });
   },
   userInputs: function(form) {
     var salary = form.getElementsByClassName("salary")[0];

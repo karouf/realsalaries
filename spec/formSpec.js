@@ -60,3 +60,13 @@ describe("update", function() {
     expect($j(".inflation-impact").text()).toEqual("-3.16");
   });
 });
+
+describe(".inflation behavior", function() {
+  it("updates result on salary change", function() {
+    spyOn(form, "update");
+
+    $j(".inflation").trigger("change");
+
+    expect(form.update).toHaveBeenCalled();
+  });
+});
