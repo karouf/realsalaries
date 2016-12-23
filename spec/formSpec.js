@@ -57,7 +57,7 @@ describe("update", function() {
     var element = document.getElementsByClassName("inflation-impact")[0];
     form.update(theForm, element);
 
-    expect($j(".inflation-impact").text()).toEqual("-3.16");
+    expect($j(".inflation-impact").text()).toEqual("-1.43");
   });
 });
 

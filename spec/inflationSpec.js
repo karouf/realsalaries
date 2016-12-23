@@ -87,6 +87,6 @@ describe("data", function() {
     var endPeriod = new Date(2015, 2, 1);
     var result = inflation.data("CAN", startPeriod, endPeriod);
 
-    expect(result).toEqual([0.9748172, 1.047542, 1.201923]);
+    expect(result).toEqual([-0.161, 0.885, 0.718]);
   });
 });
