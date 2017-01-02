@@ -22,6 +22,8 @@
   },
   "scripts": {
     "server:start": "node_modules/.bin/ws",
+    "clean": "rm -rf dist/*",
+    "prebuild": "npm run clean",
     "build": "mkdir -p dist && cp -R html/* dist/ && cp -R js/ dist/"
   }
 }
