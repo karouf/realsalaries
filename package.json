@@ -21,6 +21,7 @@
     "local-web-server": "^1.2.6"
   },
   "scripts": {
-    "server:start": "node_modules/.bin/ws"
+    "server:start": "node_modules/.bin/ws",
+    "build": "mkdir -p dist && cp -R html/* dist/ && cp -R js/ dist/"
   }
 }
