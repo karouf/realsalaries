@@ -24,6 +24,7 @@
     "server:start": "node_modules/.bin/ws",
     "clean": "rm -rf dist/*",
     "prebuild": "npm run clean",
-    "build": "mkdir -p dist && cp -R html/* dist/ && cp -R js/ dist/"
+    "build": "mkdir -p dist && cp -R html/* dist/ && cp -R js/ dist/",
+    "deploy": "cd dist && git add --all && git commit -m \"Release - $(date +%d/%m/%Y) at $(date +%H:%M:%S)\" && git push"
   }
 }
