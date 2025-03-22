@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#F8FAFC"/>
+  
+  <!-- Gradient overlay -->
+  <rect width="1200" height="630" fill="url(#gradient)" opacity="0.1"/>
+  
+  <!-- Title -->
+  <text x="100" y="150" fill="#1E293B" font-family="system-ui, -apple-system, sans-serif" font-size="64" font-weight="bold">
+    Is Inflation Eating Your Salary?
+  </text>
+  
+  <!-- Subtitle -->
+  <text x="100" y="220" fill="#475569" font-family="system-ui, -apple-system, sans-serif" font-size="32">
+    Understand your salary's real value over time
+  </text>
+  
+  <!-- Sample graph -->
+  <g transform="translate(100, 280)">
+    <!-- Graph background -->
+    <rect width="1000" height="250" fill="white" rx="8"/>
+    
+    <!-- Grid lines -->
+    <path d="M 0 50 H 1000" stroke="#E2E8F0" stroke-width="1"/>
+    <path d="M 0 100 H 1000" stroke="#E2E8F0" stroke-width="1"/>
+    <path d="M 0 150 H 1000" stroke="#E2E8F0" stroke-width="1"/>
+    <path d="M 0 200 H 1000" stroke="#E2E8F0" stroke-width="1"/>
+    
+    <!-- Nominal salary line (blue) -->
+    <path d="M 50 200 C 200 180, 400 150, 950 50" stroke="#3B82F6" stroke-width="4" fill="none"/>
+    
+    <!-- Real salary line (red) -->
+    <path d="M 50 200 C 200 190, 400 170, 950 150" stroke="#EF4444" stroke-width="4" fill="none"/>
+    
+    <!-- Legend -->
+    <circle cx="750" cy="20" r="6" fill="#3B82F6"/>
+    <text x="770" y="25" fill="#1E293B" font-family="system-ui, -apple-system, sans-serif" font-size="14">
+      Nominal Salary
+    </text>
+    <circle cx="900" cy="20" r="6" fill="#EF4444"/>
+    <text x="920" y="25" fill="#1E293B" font-family="system-ui, -apple-system, sans-serif" font-size="14">
+      Real Value
+    </text>
+  </g>
+  
+  <!-- URL -->
+  <text x="100" y="580" fill="#64748B" font-family="system-ui, -apple-system, sans-serif" font-size="24">
+    inflationimpact.com
+  </text>
+  
+  <!-- Definitions -->
+  <defs>
+    <linearGradient id="gradient" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#EF4444;stop-opacity:1"/>
+    </linearGradient>
+  </defs>
+</svg>

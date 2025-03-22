@@ -1,3 +1,11 @@
+---
+export interface Props {
+	title?: string;
+}
+
+const { title = "Inflation Impact - Understand how inflation affects your salary" } = Astro.props;
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
@@ -5,10 +13,39 @@
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+			<title>{title}</title>
+		<meta name="description" content="Visualize how inflation has eroded your salary's purchasing power over time with our interactive calculator." />
+		
+		<!-- Open Graph / Social Media -->
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content="Visualize how inflation has eroded your salary's purchasing power over time with our interactive calculator." />
+		<meta property="og:image" content="/og-image.png" />
+		<meta property="twitter:card" content="summary_large_image" />
 	</head>
-	<body>
+	<body class="bg-gray-50 min-h-screen">
+		<header class="bg-blue-700 text-white p-4 shadow-md">
+			<div class="container mx-auto flex justify-between items-center">
+				<a href="/" class="text-xl font-bold">Inflation Impact</a>
+				<nav>
+					<ul class="flex space-x-6">
+						<li><a href="/" class="hover:underline">Home</a></li>
+						<li><a href="/simulator" class="hover:underline">Simulator</a></li>
+					</ul>
+				</nav>
+			</div>
+		</header>
+		
 		<slot />
+		
+		<footer class="bg-gray-800 text-white p-6 mt-12">
+			<div class="container mx-auto text-center">
+				<p>© {new Date().getFullYear()} Inflation Impact Calculator. All rights reserved.</p>
+				<p class="mt-2 text-sm text-gray-400">
+					Data sourced from the OECD (Organisation for Economic Co-operation and Development).
+				</p>
+			</div>
+		</footer>
 	</body>
 </html>
 
