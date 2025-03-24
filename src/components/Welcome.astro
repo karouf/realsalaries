@@ -47,7 +47,7 @@ import background from '../assets/background.svg';
 		align-items: center;
 		justify-content: center;
 		padding: 5rem 1rem;
-		background: linear-gradient(to bottom, #f0f5ff, #ffffff);
+		background: linear-gradient(to bottom, rgba(180, 207, 102, 0.2), rgba(255, 255, 255, 0.9));
 	}
 	
 	.hero-content {
@@ -59,7 +59,7 @@ import background from '../assets/background.svg';
 		font-size: 3.5rem;
 		font-weight: 800;
 		margin-bottom: 1.5rem;
-		background: linear-gradient(90deg, #2563eb, #4338ca);
+		background: linear-gradient(90deg, #146152, #44803F);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		background-clip: text;
@@ -68,7 +68,7 @@ import background from '../assets/background.svg';
 	
 	p {
 		font-size: 1.25rem;
-		color: #4b5563;
+		color: #146152;
 		margin-bottom: 2rem;
 		line-height: 1.5;
 	}
@@ -82,35 +82,37 @@ import background from '../assets/background.svg';
 	
 	.primary-button {
 		display: inline-block;
-		background-color: #2563eb;
+		background-color: #146152;
 		color: white;
 		font-weight: 600;
 		padding: 0.75rem 1.5rem;
 		border-radius: 0.5rem;
 		text-decoration: none;
-		transition: background-color 0.2s;
+		transition: background-color 0.2s, transform 0.2s;
 		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 	}
 	
 	.primary-button:hover {
-		background-color: #1d4ed8;
+		background-color: #FF5A33;
+		transform: translateY(-2px);
 	}
 	
 	.secondary-button {
 		display: inline-block;
-		background-color: white;
-		color: #2563eb;
+		background-color: #FFEC5C;
+		color: #146152;
 		font-weight: 600;
 		padding: 0.75rem 1.5rem;
 		border-radius: 0.5rem;
 		text-decoration: none;
-		border: 1px solid #d1d5db;
-		transition: background-color 0.2s;
+		border: 1px solid #B4CF66;
+		transition: background-color 0.2s, transform 0.2s;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 	}
 	
 	.secondary-button:hover {
-		background-color: #f9fafb;
+		background-color: #B4CF66;
+		transform: translateY(-2px);
 	}
 	
 	@media (max-width: 640px) {
