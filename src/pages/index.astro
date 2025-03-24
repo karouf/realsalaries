@@ -4,40 +4,158 @@ import QuickCalculator from '../components/QuickCalculator.tsx';
 ---
 
 <Layout title="Inflation Impact - Understand how inflation affects your salary">
-  <main class="container mx-auto px-4 py-8">
-    <section class="text-center max-w-4xl mx-auto mb-12">
-      <h1 class="text-4xl font-bold mb-4">Understand the Real Impact of Inflation on Your Salary</h1>
-      <p class="text-xl mb-6">
-        While your salary may increase over time, its purchasing power might actually be decreasing.
-      </p>
-    </section>
-
-    <section class="bg-white rounded-lg shadow-lg p-8 mb-12 max-w-3xl mx-auto">
-      <h2 class="text-2xl font-semibold mb-4">What is Inflation?</h2>
-      <p class="mb-4">
-        Inflation is the rate at which the general level of prices for goods and services rises, eroding purchasing power. 
-        Even with regular salary increases, if your wages don't grow at least as fast as inflation, you're actually 
-        getting poorer in real terms.
-      </p>
-      <div class="bg-blue-50 p-4 rounded-md mb-6">
-        <p class="font-medium">Example: If inflation is 5% per year and your salary increases by only 2%, 
-        your purchasing power has actually decreased by 3%.</p>
+  <main>
+    <!-- Hero section with powerful message and visual impact -->
+    <section class="relative py-16 bg-gradient-to-br from-tropical-1 to-tropical-2 text-white overflow-hidden">
+      <div class="absolute inset-0 overflow-hidden opacity-20">
+        <svg class="absolute bottom-0 left-0 transform translate-y-1/4" width="2000" height="2000" fill="none">
+          <circle cx="1000" cy="1000" r="800" stroke="white" stroke-width="100" stroke-opacity="0.2" />
+          <circle cx="1000" cy="1000" r="400" stroke="white" stroke-width="100" stroke-opacity="0.4" />
+        </svg>
+      </div>
+      
+      <div class="container mx-auto px-4 relative z-10">
+        <div class="max-w-4xl mx-auto text-center">
+          <h1 class="text-5xl md:text-6xl font-bold mb-6 animate-fade-in">
+            Your Salary Is <span class="text-tropical-4">Shrinking</span> Right Now
+          </h1>
+          <p class="text-2xl mb-10 animate-slide-up">
+            Even with regular raises, <span class="font-bold text-tropical-4">inflation is silently eroding</span> your purchasing power every day.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+            <a href="#quick-check" class="btn-primary text-lg px-8 py-4 rounded-lg bg-tropical-5 hover:bg-tropical-5/90 text-white font-bold transition-all transform hover:scale-105 shadow-lg">
+              Check Your Loss →
+            </a>
+            <a href="/simulator" class="btn-secondary text-lg px-8 py-4 rounded-lg bg-white/20 hover:bg-white/30 backdrop-blur-sm text-tropical-5/90 font-bold transition-all border-2 border-white/40 shadow-lg">
+              Full Salary Simulator
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Wave divider -->
+      <div class="absolute bottom-0 left-0 w-full">
+        <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+          <path d="M0 0L48 8.875C96 17.75 192 35.5 288 53.25C384 71 480 88.75 576 71C672 53.25 768 0 864 0C960 0 1056 53.25 1152 71C1248 88.75 1344 71 1392 62.125L1440 53.25V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0V0Z" fill="white"/>
+        </svg>
       </div>
     </section>
 
-    <section class="bg-white rounded-lg shadow-lg p-8 mb-12 max-w-3xl mx-auto">
-      <h2 class="text-2xl font-semibold mb-4">Quick Calculator</h2>
-      <p class="mb-4">
-        Enter your salary from 5 years ago to see what it would be worth today after inflation:
-      </p>
-      <QuickCalculator client:load />
+    <!-- Stark reality section -->
+    <section class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="max-w-5xl mx-auto">
+          <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div class="bg-tropical-5/10 p-8 rounded-2xl border-l-8 border-tropical-5 shadow-md transform -rotate-2 hover:rotate-0 transition-transform">
+              <h2 class="text-3xl font-bold mb-4 text-tropical-1">The Inflation Reality</h2>
+              <p class="text-xl mb-4 text-tropical-2">
+                Inflation is the silent tax that's reducing your salary's true value day by day. 
+              </p>
+              <div class="bg-white p-6 rounded-xl shadow-inner">
+                <p class="font-bold text-tropical-5 text-2xl">
+                  A 5% inflation rate means a $50,000 salary loses $2,500 in purchasing power in just one year.
+                </p>
+              </div>
+            </div>
+            
+            <div>
+              <div class="space-y-6">
+                <div class="flex gap-4 items-start">
+                  <div class="bg-tropical-3 rounded-full p-3 text-tropical-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 class="text-xl font-bold text-tropical-1">Your Nominal Salary</h3>
+                    <p class="text-tropical-2">What your paycheck shows - the amount that feels good on paper.</p>
+                  </div>
+                </div>
+                
+                <div class="flex gap-4 items-start">
+                  <div class="bg-tropical-5 rounded-full p-3 text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 class="text-xl font-bold text-tropical-5">Your Real Salary</h3>
+                    <p class="text-tropical-2">What your money can actually buy - your true purchasing power.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section class="text-center mb-10">
-      <h2 class="text-2xl font-semibold mb-4">Want a detailed analysis of your salary history?</h2>
-      <a href="/simulator" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors">
-        Try Our Full Simulator →
-      </a>
+    <!-- Quick Calculator Section with eye-catching design -->
+    <section id="quick-check" class="py-16 bg-gradient-to-br from-tropical-3/20 to-tropical-4/20">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+          <div class="text-center mb-10">
+            <span class="inline-block px-4 py-1 rounded-full bg-tropical-5 text-white font-medium text-sm mb-4">QUICK CALCULATOR</span>
+            <h2 class="text-4xl font-bold text-tropical-1 mb-4">See How Much You've Lost</h2>
+            <p class="text-xl text-tropical-2">Enter your salary from a previous year to see its actual value today:</p>
+          </div>
+          
+          <div class="transform hover:-translate-y-1 transition-transform">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-tropical-3/30">
+              <div class="bg-tropical-1 text-white p-4 text-center">
+                <h3 class="font-bold text-xl">Inflation Impact Calculator</h3>
+              </div>
+              <div class="p-6">
+                <QuickCalculator client:load />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- CTA section -->
+    <section class="relative py-20 bg-tropical-1 text-white overflow-hidden">
+      <div class="absolute inset-0 opacity-10">
+        <svg width="100%" height="100%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+              <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" stroke-width="0.5"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid)" />
+        </svg>
+      </div>
+      
+      <div class="container mx-auto px-4 relative z-10">
+        <div class="max-w-4xl mx-auto text-center">
+          <h2 class="text-4xl font-bold mb-6">Ready for the Full Picture?</h2>
+          <p class="text-xl mb-8">Our advanced simulator lets you track your entire salary history against inflation rates.</p>
+          <div class="inline-block transform hover:scale-105 transition-transform">
+            <a href="/simulator" class="inline-block bg-white text-tropical-1 font-bold text-lg py-4 px-8 rounded-lg shadow-lg hover:shadow-xl transition-all border-b-4 border-tropical-4">
+              Launch Full Simulator →
+            </a>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
 </Layout>
+
+<style>
+  /* Add smooth scrolling for anchor links */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Enhance button interactions */
+  .btn-primary, .btn-secondary {
+    display: inline-block;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+</style>

@@ -2,10 +2,8 @@
 export interface Props {
 	title?: string;
 }
-
 const { title = "Inflation Impact - Understand how inflation affects your salary" } = Astro.props;
 ---
-
 <!doctype html>
 <html lang="en">
 	<head>
@@ -13,7 +11,7 @@ const { title = "Inflation Impact - Understand how inflation affects your salary
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-			<title>{title}</title>
+		<title>{title}</title>
 		<meta name="description" content="Visualize how inflation has eroded your salary's purchasing power over time with our interactive calculator." />
 		
 		<!-- Open Graph / Social Media -->
@@ -22,15 +20,31 @@ const { title = "Inflation Impact - Understand how inflation affects your salary
 		<meta property="og:description" content="Visualize how inflation has eroded your salary's purchasing power over time with our interactive calculator." />
 		<meta property="og:image" content="/og-image.png" />
 		<meta property="twitter:card" content="summary_large_image" />
+		
+		<!-- Google Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 	</head>
-	<body class="bg-gray-50 min-h-screen">
-		<header class="bg-blue-700 text-white p-4 shadow-md">
-			<div class="container mx-auto flex justify-between items-center">
-				<a href="/" class="text-xl font-bold">Real Salaries</a>
+	<body class="bg-gray-50 min-h-screen font-['Inter',sans-serif]">
+		<header class="bg-tropical-1 text-white py-5 shadow-lg sticky top-0 z-50">
+			<div class="container mx-auto px-4 flex justify-between items-center">
+				<a href="/" class="text-2xl font-extrabold flex items-center">
+					<span class="text-yellow-300 mr-1">Real</span>Salaries
+					<span class="text-xs font-normal text-white/60 ml-2 hidden sm:inline-block">Inflation Impact Calculator</span>
+				</a>
 				<nav>
-					<ul class="flex space-x-6">
-						<li><a href="/" class="hover:underline">Home</a></li>
-						<li><a href="/simulator" class="hover:underline">Simulator</a></li>
+					<ul class="flex space-x-1 md:space-x-6">
+						<li>
+							<a href="/" class="hover:text-yellow-300 transition-colors py-2 px-3 rounded-lg hover:bg-white/10">
+								Home
+							</a>
+						</li>
+						<li>
+							<a href="/simulator" class="hover:text-yellow-300 transition-colors py-2 px-4 rounded-lg hover:bg-white/10 border border-white/20 hover:border-white/40">
+								Simulator
+							</a>
+						</li>
 					</ul>
 				</nav>
 			</div>
@@ -38,22 +52,45 @@ const { title = "Inflation Impact - Understand how inflation affects your salary
 		
 		<slot />
 		
-		<footer class="bg-gray-800 text-white p-6 mt-12">
-			<div class="container mx-auto text-center">
-				<p>© {new Date().getFullYear()} RealSalari.es - All rights reserved.</p>
-				<p class="mt-2 text-sm text-gray-400">
-					Data sourced from the OECD (Organisation for Economic Co-operation and Development).
-				</p>
+		<footer class="bg-tropical-2 text-white py-12">
+			<div class="container mx-auto px-6">
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+					<div>
+						<h3 class="text-xl font-bold mb-4">About RealSalaries</h3>
+						<p class="text-white/80">
+							We help you understand the real impact of inflation on your earnings and purchasing power.
+						</p>
+					</div>
+					<div>
+						<h3 class="text-xl font-bold mb-4">Quick Links</h3>
+						<ul class="space-y-2">
+							<li><a href="/" class="text-white/80 hover:text-yellow-300 transition-colors">Home</a></li>
+							<li><a href="/simulator" class="text-white/80 hover:text-yellow-300 transition-colors">Full Simulator</a></li>
+						</ul>
+					</div>
+					<div>
+						<h3 class="text-xl font-bold mb-4">Data Sources</h3>
+						<p class="text-white/80">
+							All inflation data is sourced from the OECD (Organisation for Economic Co-operation and Development).
+						</p>
+					</div>
+				</div>
+				<div class="border-t border-white/20 pt-8 text-center">
+					<p>© {new Date().getFullYear()} RealSalari.es - All rights reserved.</p>
+				</div>
 			</div>
 		</footer>
 	</body>
 </html>
-
 <style>
 	html,
 	body {
 		margin: 0;
 		width: 100%;
 		height: 100%;
+	}
+	
+	:root {
+		scroll-behavior: smooth;
 	}
 </style>

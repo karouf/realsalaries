@@ -115,18 +115,18 @@ const SalarySimulator: React.FC = () => {
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white p-4 border border-gray-200 shadow-md rounded-md">
-          <p className="font-semibold">{formatDate(label)}</p>
-          <p className="text-blue-500">
+        <div className="bg-white p-4 border border-tropical-3 shadow-md rounded-md">
+          <p className="font-semibold text-tropical-1">{formatDate(label)}</p>
+          <p className="text-tropical-2">
             Nominal Salary: {formatCurrency(payload[0].value)}
           </p>
           {payload.length > 1 && (
-            <p className="text-red-500">
+            <p className="text-tropical-5">
               Real Salary: {formatCurrency(payload[1].value)}
             </p>
           )}
           {payload.length > 1 && (
-            <p className="font-medium">
+            <p className="font-medium text-tropical-1">
               Loss: {payload[0].payload.percentDifference.toFixed(1)}%
             </p>
           )}
@@ -184,14 +184,14 @@ const SalarySimulator: React.FC = () => {
 
   return (
     <div className="max-w-5xl mx-auto">
-      <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-        <h2 className="text-xl font-semibold mb-4">Enter Your Salary History</h2>
+      <div className="bg-white rounded-lg shadow-md p-6 mb-8 border border-tropical-3/30">
+        <h2 className="text-xl font-semibold mb-4 text-tropical-1">Enter Your Salary History</h2>
         
         <div className="mb-6">
           {salaryEntries.map((entry, index) => (
             <div key={index} className="flex flex-wrap gap-4 mb-4 items-end">
               <div className="flex-1 min-w-[200px]">
-                <label htmlFor={`salary-date-${index}`} className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor={`salary-date-${index}`} className="block text-sm font-medium text-tropical-2 mb-1">
                   Date
                 </label>
                 <input
@@ -199,25 +199,25 @@ const SalarySimulator: React.FC = () => {
                   id={`salary-date-${index}`}
                   value={entry.date}
                   onChange={(e) => updateSalaryEntry(index, 'date', e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded-md"
+                  className="w-full p-2 border border-tropical-3 rounded-md focus:ring-tropical-1 focus:border-tropical-1"
                   aria-label={`Salary change date ${index + 1}`}
                 />
               </div>
               
               <div className="flex-1 min-w-[200px]">
-                <label htmlFor={`salary-amount-${index}`} className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor={`salary-amount-${index}`} className="block text-sm font-medium text-tropical-2 mb-1">
                   Monthly Salary
                 </label>
                 <div className="relative rounded-md">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <span className="text-gray-500 sm:text-sm">$</span>
+                    <span className="text-tropical-2 sm:text-sm">$</span>
                   </div>
                   <input
                     type="number"
                     id={`salary-amount-${index}`}
                     value={entry.amount}
                     onChange={(e) => updateSalaryEntry(index, 'amount', e.target.value)}
-                    className="w-full pl-7 p-2 border border-gray-300 rounded-md"
+                    className="w-full pl-7 p-2 border border-tropical-3 rounded-md focus:ring-tropical-1 focus:border-tropical-1"
                     aria-label={`Salary amount ${index + 1}`}
                     min="0"
                   />
@@ -228,7 +228,7 @@ const SalarySimulator: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => removeSalaryEntry(index)}
-                  className="p-2 border border-red-300 text-red-500 rounded-md hover:bg-red-50"
+                  className="p-2 border border-tropical-5/30 text-tropical-5 rounded-md hover:bg-tropical-5/10 transition-colors"
                   aria-label="Remove salary entry"
                   disabled={salaryEntries.length <= 1}
                 >
@@ -241,7 +241,7 @@ const SalarySimulator: React.FC = () => {
           <button
             type="button"
             onClick={addSalaryEntry}
-            className="mt-2 py-1 px-3 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200"
+            className="mt-2 py-1 px-3 bg-tropical-3/20 text-tropical-2 rounded-md hover:bg-tropical-3/30 transition-colors"
           >
             + Add Another Salary Change
           </button>
@@ -249,14 +249,14 @@ const SalarySimulator: React.FC = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <div>
-            <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="country" className="block text-sm font-medium text-tropical-2 mb-1">
               Country
             </label>
             <select
               id="country"
               value={selectedCountry}
               onChange={(e) => setSelectedCountry(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-tropical-3 rounded-md focus:ring-tropical-1 focus:border-tropical-1"
               aria-label="Select your country"
             >
               {COUNTRIES.map((country) => (
@@ -266,7 +266,7 @@ const SalarySimulator: React.FC = () => {
           </div>
           
           <div>
-            <label htmlFor="start-date" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="start-date" className="block text-sm font-medium text-tropical-2 mb-1">
               Start Date
             </label>
             <input
@@ -274,13 +274,13 @@ const SalarySimulator: React.FC = () => {
               id="start-date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-tropical-3 rounded-md focus:ring-tropical-1 focus:border-tropical-1"
               aria-label="Analysis start date"
             />
           </div>
           
           <div>
-            <label htmlFor="end-date" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="end-date" className="block text-sm font-medium text-tropical-2 mb-1">
               End Date
             </label>
             <input
@@ -288,7 +288,7 @@ const SalarySimulator: React.FC = () => {
               id="end-date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-tropical-3 rounded-md focus:ring-tropical-1 focus:border-tropical-1"
               aria-label="Analysis end date"
             />
           </div>
@@ -298,29 +298,29 @@ const SalarySimulator: React.FC = () => {
           type="button"
           onClick={calculateResults}
           disabled={loading}
-          className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+          className="w-full py-2 px-4 bg-tropical-1 text-white rounded-md hover:bg-tropical-2 focus:outline-none focus:ring-2 focus:ring-tropical-1 disabled:opacity-50 transition-colors"
         >
           {loading ? 'Calculating...' : 'Calculate Inflation Impact'}
         </button>
         
         {error && (
-          <div className="mt-4 p-3 bg-red-100 text-red-700 rounded-md">
+          <div className="mt-4 p-3 bg-tropical-5/10 text-tropical-5 rounded-md">
             {error}
           </div>
         )}
       </div>
       
       {calculationComplete && results.length > 0 && (
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <h2 className="text-xl font-semibold mb-4">Results</h2>
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8 border border-tropical-3/30">
+          <h2 className="text-xl font-semibold mb-4 text-tropical-1">Results</h2>
           
           <div className="mb-6">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-medium">Salary vs. Inflation Over Time</h3>
+              <h3 className="text-lg font-medium text-tropical-2">Salary vs. Inflation Over Time</h3>
               <div className="flex gap-2">
                 <button
                   onClick={saveChartImage}
-                  className="py-1 px-3 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
+                  className="py-1 px-3 bg-tropical-3/20 text-tropical-2 rounded-md hover:bg-tropical-3/30 transition-colors"
                 >
                   Download Chart
                 </button>
@@ -333,22 +333,24 @@ const SalarySimulator: React.FC = () => {
                   data={results}
                   margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
                 >
-                  <CartesianGrid strokeDasharray="3 3" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#B4CF66" opacity={0.2} />
                   <XAxis 
                     dataKey="date" 
                     tickFormatter={formatDate}
                     minTickGap={30}
+                    tick={{ fill: '#146152' }}
                   />
                   <YAxis 
                     tickFormatter={(value) => formatCurrency(value).replace('$', '')}
+                    tick={{ fill: '#146152' }}
                   />
                   <Tooltip content={<CustomTooltip />} />
-                  <Legend />
+                  <Legend wrapperStyle={{ color: '#146152' }} />
                   <Line 
                     type="monotone" 
                     dataKey="nominalSalary" 
                     name="Nominal Salary" 
-                    stroke="#3b82f6" 
+                    stroke="#44803F" 
                     strokeWidth={2}
                     dot={false}
                     activeDot={{ r: 6 }}
@@ -358,7 +360,7 @@ const SalarySimulator: React.FC = () => {
                       type="monotone" 
                       dataKey="realSalary" 
                       name="Real Salary (Inflation-Adjusted)" 
-                      stroke="#ef4444" 
+                      stroke="#FF5A33" 
                       strokeWidth={2}
                       dot={false}
                       activeDot={{ r: 6 }}
@@ -367,9 +369,9 @@ const SalarySimulator: React.FC = () => {
                   {showRealSalary && results.length > 0 && (
                     <ReferenceLine 
                       y={results[0].nominalSalary} 
-                      stroke="#64748b" 
+                      stroke="#B4CF66" 
                       strokeDasharray="3 3"
-                      label={{ value: 'Initial Value', position: 'insideBottomRight' }}
+                      label={{ value: 'Initial Value', position: 'insideBottomRight', fill: '#44803F' }}
                     />
                   )}
                 </LineChart>
@@ -377,8 +379,8 @@ const SalarySimulator: React.FC = () => {
             </div>
             
             {showRealSalary && results.length > 0 && (
-              <div className="mt-4 p-4 bg-red-50 rounded-md">
-                <h4 className="font-semibold text-red-700">Impact Summary</h4>
+              <div className="mt-4 p-4 bg-tropical-5/10 rounded-md">
+                <h4 className="font-semibold text-tropical-5">Impact Summary</h4>
                 <p className="mt-1">
                   Your purchasing power has decreased by 
                   <span className="font-bold"> {getTotalPercentageLoss(results).toFixed(1)}% </span> 
@@ -392,34 +394,34 @@ const SalarySimulator: React.FC = () => {
             )}
           </div>
           
-          <div className="border-t border-gray-200 pt-4">
-            <h3 className="text-lg font-medium mb-3">Share Your Results</h3>
-            <p className="mb-3">{generateSharingText()}</p>
+          <div className="border-t border-tropical-3/30 pt-4">
+            <h3 className="text-lg font-medium mb-3 text-tropical-1">Share Your Results</h3>
+            <p className="mb-3 text-tropical-2">{generateSharingText()}</p>
             
             <div className="flex gap-2">
               <button
                 onClick={() => handleShare('twitter')}
-                className="button-primary bg-[#1DA1F2] hover:bg-[#1a8cd8]"
+                className="px-3 py-2 bg-tropical-1 text-white rounded-md hover:bg-tropical-2 transition-colors"
               >
                 Share on Twitter
               </button>
               <button
                 onClick={() => handleShare('facebook')}
-                className="button-primary bg-[#4267B2] hover:bg-[#365899]"
+                className="px-3 py-2 bg-tropical-1 text-white rounded-md hover:bg-tropical-2 transition-colors"
               >
                 Share on Facebook
               </button>
               <button
                 onClick={() => handleShare('linkedin')}
-                className="button-primary bg-[#0077B5] hover:bg-[#006097]"
+                className="px-3 py-2 bg-tropical-1 text-white rounded-md hover:bg-tropical-2 transition-colors"
               >
                 Share on LinkedIn
               </button>
             </div>
           </div>
           
-          <div className="mt-6 border-t border-gray-200 pt-4">
-            <details className="text-gray-700">
+          <div className="mt-6 border-t border-tropical-3/30 pt-4">
+            <details className="text-tropical-2">
               <summary className="font-medium cursor-pointer">Learn more about inflation and its impact</summary>
               <div className="mt-3 pl-4">
                 <p className="mb-2">

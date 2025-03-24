@@ -7,6 +7,12 @@ export default {
         'chart-blue': '#3b82f6',
         'chart-red': '#ef4444',
         'chart-gray': '#64748b',
+        // Tropical Fruit Punch Color Palette
+        'tropical-1': '#146152', // Dark green
+        'tropical-2': '#44803F', // Medium green
+        'tropical-3': '#B4CF66', // Light green
+        'tropical-4': '#FFEC5C', // Yellow
+        'tropical-5': '#FF5A33', // Orange-red
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-out',
