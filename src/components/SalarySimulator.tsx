@@ -11,7 +11,12 @@ import {
   formatCurrency,
   getTotalPercentageLoss
 } from '../utils/calculationUtils';
-import { generateShareableImage, shareOnSocialMedia } from '../utils/socialSharingUtils';
+import { 
+  generateShareableImage, 
+  shareOnSocialMedia,
+  shareToMastodon,
+  shareToBlueSky
+} from '../utils/socialSharingUtils';
 import pkg from 'file-saver';
 const { saveAs } = pkg;
 
@@ -182,6 +187,45 @@ const SalarySimulator: React.FC = () => {
     }
   };
 
+  // Handle share on Mastodon and Bluesky
+  const handleMastodonShare = async () => {
+    if (!chartRef.current || results.length === 0) return;
+    
+    try {
+      const { dataUrl, text } = await generateShareableImage(chartRef.current, results);
+      setShareableImage(dataUrl);
+      
+      // For Mastodon, we'll open a dialog to ask the user for their instance
+      const instance = window.prompt('Enter your Mastodon instance URL (e.g., mastodon.social):', 'mastodon.social');
+      if (!instance) return;
+      
+      // Use the utility function to share to Mastodon
+      shareToMastodon(instance, text, window.location.href);
+    } catch (err) {
+      console.error('Error sharing results to Mastodon:', err);
+    }
+  };
+  
+  const handleBlueSkyShare = async () => {
+    if (!chartRef.current || results.length === 0) return;
+    
+    try {
+      const { dataUrl, text } = await generateShareableImage(chartRef.current, results);
+      setShareableImage(dataUrl);
+      
+      // Use the utility function to share to BlueSky
+      await shareToBlueSky(text, window.location.href);
+    } catch (err) {
+      console.error('Error sharing results to BlueSky:', err);
+      // Fallback to basic text sharing
+      const shareText = generateSharingText() + ' ' + window.location.href;
+      navigator.clipboard.writeText(shareText).then(() => {
+        window.open('https://bsky.app', '_blank');
+        alert('Share text copied to clipboard. Please paste it in your BlueSky post.');
+      });
+    }
+  };
+
   return (
     <div className="max-w-6xl mx-auto">
       {/* Hero section similar to home page */}
@@ -205,7 +249,7 @@ const SalarySimulator: React.FC = () => {
         </div>
       </section>
 
-      <div className="mb-12 bg-white p-6 lg:p-8 rounded-2xl shadow-lg border border-tropical-3/20 transform hover:-translate-y-1 transition-transform">
+      <div className="mb-12 bg-white p-6 lg:p-8 rounded-2xl shadow-lg border border-tropical-3/20">
         <div className="inline-block px-4 py-1 rounded-full bg-tropical-5 text-white font-medium text-sm mb-4">SALARY SIMULATOR</div>
         <h2 className="text-2xl font-bold mb-6 text-tropical-1">Enter Your Salary History</h2>
         
@@ -353,7 +397,7 @@ const SalarySimulator: React.FC = () => {
       </div>
       
       {calculationComplete && results.length > 0 && (
-        <div className="mb-12 bg-white p-8 rounded-2xl shadow-lg border border-tropical-3/20 transform hover:-translate-y-1 transition-transform">
+        <div className="mb-12 bg-white p-8 rounded-2xl shadow-lg border border-tropical-3/20">
           <div className="inline-block px-4 py-1 rounded-full bg-tropical-1 text-white font-medium text-sm mb-4">RESULTS</div>
           <h2 className="text-3xl font-bold mb-6 text-tropical-1">Your Inflation Impact Results</h2>
           
@@ -429,8 +473,8 @@ const SalarySimulator: React.FC = () => {
                 <h4 className="text-2xl font-bold text-tropical-1 mb-6">Impact Summary</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="bg-gradient-to-br from-tropical-5/10 to-tropical-5/20 p-6 rounded-xl shadow-sm border border-tropical-5/30">
-                    <div className="flex items-start gap-4">
-                      <div className="bg-tropical-5 rounded-full p-3 text-white mt-1">
+                    <div className="flex items-center gap-4">
+                      <div className="bg-tropical-5 rounded-full p-3 text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
                         </svg>
@@ -444,8 +488,8 @@ const SalarySimulator: React.FC = () => {
                   </div>
                   
                   <div className="bg-gradient-to-br from-tropical-1/10 to-tropical-1/20 p-6 rounded-xl shadow-sm border border-tropical-1/30">
-                    <div className="flex items-start gap-4">
-                      <div className="bg-tropical-1 rounded-full p-3 text-white mt-1">
+                    <div className="flex items-center gap-4">
+                      <div className="bg-tropical-1 rounded-full p-3 text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
@@ -465,47 +509,10 @@ const SalarySimulator: React.FC = () => {
           </div>
           
           <div className="border-t-2 border-tropical-3/20 pt-8 mt-8">
-            <h3 className="text-2xl font-bold mb-4 text-tropical-1">Share Your Results</h3>
-            <p className="mb-6 text-tropical-2 p-4 bg-tropical-3/10 rounded-xl italic border-l-4 border-tropical-4">
-              "{generateSharingText()}"
-            </p>
-            
-            <div className="flex flex-wrap gap-4">
-              <button
-                onClick={() => handleShare('twitter')}
-                className="px-5 py-3 bg-[#1DA1F2] text-white rounded-lg hover:bg-[#1DA1F2]/90 transition-all flex items-center shadow-md transform hover:scale-105"
-              >
-                <svg className="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723 10.1 10.1 0 01-3.127 1.184 4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-                </svg>
-                Share on Twitter
-              </button>
-              <button
-                onClick={() => handleShare('facebook')}
-                className="px-5 py-3 bg-[#1877F2] text-white rounded-lg hover:bg-[#1877F2]/90 transition-all flex items-center shadow-md transform hover:scale-105"
-              >
-                <svg className="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                </svg>
-                Share on Facebook
-              </button>
-              <button
-                onClick={() => handleShare('linkedin')}
-                className="px-5 py-3 bg-[#0A66C2] text-white rounded-lg hover:bg-[#0A66C2]/90 transition-all flex items-center shadow-md transform hover:scale-105"
-              >
-                <svg className="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                </svg>
-                Share on LinkedIn
-              </button>
-            </div>
-          </div>
-          
-          <div className="mt-8 border-t-2 border-tropical-3/20 pt-6">
-            <details className="text-tropical-2 bg-gradient-to-br from-tropical-3/5 to-tropical-3/10 p-6 rounded-xl border border-tropical-3/20">
-              <summary className="font-bold cursor-pointer text-tropical-1 text-lg">Learn more about inflation and its impact</summary>
-              <div className="mt-4 space-y-4">
-                <div className="flex gap-3 items-start">
+            <h3 className="text-2xl font-bold mb-4 text-tropical-1">Learn More About Inflation</h3>
+            <div className="bg-gradient-to-br from-tropical-3/5 to-tropical-3/10 p-6 rounded-xl border border-tropical-3/20 mb-8">
+              <div className="space-y-4">
+                <div className="flex gap-3 items-center">
                   <div className="bg-tropical-1 rounded-full p-2 text-white shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -520,7 +527,7 @@ const SalarySimulator: React.FC = () => {
                   </div>
                 </div>
                 
-                <div className="flex gap-3 items-start">
+                <div className="flex gap-3 items-center">
                   <div className="bg-tropical-5 rounded-full p-2 text-white shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
@@ -535,7 +542,7 @@ const SalarySimulator: React.FC = () => {
                   </div>
                 </div>
                 
-                <div className="flex gap-3 items-start">
+                <div className="flex gap-3 items-center">
                   <div className="bg-tropical-4 rounded-full p-2 text-tropical-1 shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -550,7 +557,73 @@ const SalarySimulator: React.FC = () => {
                   </div>
                 </div>
               </div>
-            </details>
+            </div>
+            
+            <h3 className="text-2xl font-bold mb-4 text-tropical-1">Share Your Results</h3>
+            {showRealSalary && results.length > 0 && (
+              <p className="mb-6 text-tropical-2 p-4 bg-tropical-3/10 rounded-xl italic border-l-4 border-tropical-4">
+                "{generateSharingText()}"
+              </p>
+            )}
+            
+            <div className="flex flex-wrap gap-4">
+              {/* Mastodon Share Button */}
+              <button
+                onClick={handleMastodonShare}
+                className="px-5 py-3 bg-[#6364FF] text-white rounded-lg hover:bg-[#6364FF]/90 transition-all flex items-center shadow-md transform hover:scale-105"
+                disabled={!showRealSalary || results.length === 0}
+              >
+                <svg className="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M23.268 5.313c-.35-2.578-2.617-4.61-5.304-5.004C17.51.242 15.792 0 11.813 0h-.03c-3.98 0-4.835.242-5.288.309C3.882.692 1.496 2.518.917 5.127.64 6.412.61 7.837.661 9.143c.074 1.874.088 3.745.26 5.611.118 1.24.325 2.47.62 3.68.55 2.237 2.777 4.098 4.96 4.857 2.336.792 4.849.923 7.256.38.265-.061.527-.132.786-.213.585-.184 1.27-.39 1.774-.753a.057.057 0 0 0 .023-.043v-1.809a.052.052 0 0 0-.02-.041.053.053 0 0 0-.046-.01 20.282 20.282 0 0 1-4.709.545c-2.73 0-3.463-1.284-3.674-1.818a5.593 5.593 0 0 1-.319-1.433.053.053 0 0 1 .066-.054c1.517.363 3.072.546 4.632.546.376 0 .75 0 1.125-.01 1.57-.044 3.224-.124 4.768-.422.038-.008.077-.015.11-.024 2.435-.464 4.753-1.92 4.989-5.604.008-.145.03-1.52.03-1.67.002-.512.167-3.63-.024-5.545zm-3.748 9.195h-2.561V8.29c0-1.309-.55-1.976-1.67-1.976-1.23 0-1.846.79-1.846 2.35v3.403h-2.546V8.663c0-1.56-.617-2.35-1.848-2.35-1.112 0-1.668.668-1.67 1.977v6.218H4.822V8.102c0-1.31.337-2.35 1.011-3.12.696-.77 1.608-1.164 2.74-1.164 1.311 0 2.302.5 2.962 1.498l.638 1.06.638-1.06c.66-.999 1.65-1.498 2.96-1.498 1.13 0 2.043.395 2.74 1.164.675.77 1.012 1.81 1.012 3.12z"/>
+                </svg>
+                Mastodon
+              </button>
+
+              {/* BlueSky Share Button */}
+              <button
+                onClick={handleBlueSkyShare}
+                className="px-5 py-3 bg-[#0085FF] text-white rounded-lg hover:bg-[#0085FF]/90 transition-all flex items-center shadow-md transform hover:scale-105"
+                disabled={!showRealSalary || results.length === 0}
+              >
+                <svg className="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm-1.67 15.5v-5.137L16.5 17.5l-6.17-5.13v-3.1l10.67 8.63-10.67-2.155V17.5z"/>
+                </svg>
+                BlueSky
+              </button>
+
+              <button
+                onClick={() => handleShare('linkedin')}
+                className="px-5 py-3 bg-[#0A66C2] text-white rounded-lg hover:bg-[#0A66C2]/90 transition-all flex items-center shadow-md transform hover:scale-105"
+                disabled={!showRealSalary || results.length === 0}
+              >
+                <svg className="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+                LinkedIn
+              </button>
+
+              <button
+                onClick={() => handleShare('facebook')}
+                className="px-5 py-3 bg-[#1877F2] text-white rounded-lg hover:bg-[#1877F2]/90 transition-all flex items-center shadow-md transform hover:scale-105"
+                disabled={!showRealSalary || results.length === 0}
+              >
+                <svg className="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+                Facebook
+              </button>
+              
+              <button
+                onClick={() => handleShare('twitter')}
+                className="px-5 py-3 bg-[#1DA1F2] text-white rounded-lg hover:bg-[#1DA1F2]/90 transition-all flex items-center shadow-md transform hover:scale-105"
+                disabled={!showRealSalary || results.length === 0}
+              >
+                <svg className="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723 10.1 10.1 0 01-3.127 1.184 4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                </svg>
+                Twitter
+              </button>
+            </div>
           </div>
         </div>
       )}

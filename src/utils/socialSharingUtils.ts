@@ -65,7 +65,7 @@ export const generateShareableImage = async (
  * Opens a social media sharing dialog
  */
 export const shareOnSocialMedia = (
-  platform: 'twitter' | 'facebook' | 'linkedin',
+  platform: 'twitter' | 'facebook' | 'linkedin' | 'mastodon' | 'bluesky',
   text: string,
   url: string,
   imageUrl?: string
@@ -85,9 +85,54 @@ export const shareOnSocialMedia = (
     case 'linkedin':
       shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
       break;
+    case 'mastodon':
+      // For Mastodon, we need to know the instance, but this is handled in the component
+      // This is a fallback that opens a generic share dialog
+      shareUrl = `https://mastodon.social/share?text=${encodedText}%20${encodedUrl}`;
+      break;
+    case 'bluesky':
+      // BlueSky doesn't have a direct share URL scheme yet
+      // We'll copy to clipboard and open BlueSky in a new tab
+      // This logic is handled in the component directly
+      shareUrl = 'https://bsky.app';
+      break;
   }
   
   window.open(shareUrl, '_blank', 'width=600,height=400');
+};
+
+/**
+ * Share to Mastodon with a specific instance
+ */
+export const shareToMastodon = (
+  instanceUrl: string,
+  text: string,
+  url: string
+) => {
+  const encodedText = encodeURIComponent(`${text} ${url}`);
+  // Remove any http:// or https:// from the instance URL if present
+  const cleanInstanceUrl = instanceUrl.replace(/^https?:\/\//, '');
+  const shareUrl = `https://${cleanInstanceUrl}/share?text=${encodedText}`;
+  window.open(shareUrl, '_blank', 'width=600,height=400');
+};
+
+/**
+ * Share to BlueSky (currently just copies to clipboard and opens BlueSky)
+ */
+export const shareToBlueSky = (
+  text: string,
+  url: string
+): Promise<void> => {
+  const shareText = `${text} ${url}`;
+  return navigator.clipboard.writeText(shareText)
+    .then(() => {
+      window.open('https://bsky.app', '_blank');
+      alert('Share text copied to clipboard. Please paste it in your BlueSky post.');
+    })
+    .catch((error) => {
+      console.error('Failed to copy text to clipboard:', error);
+      throw error;
+    });
 };
 
 /**
