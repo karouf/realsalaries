@@ -20,6 +20,34 @@ import {
 import pkg from 'file-saver';
 const { saveAs } = pkg;
 
+/**
+ * Gets the flag emoji for a country code
+ * @param countryCode - ISO 3166-1 alpha-3 country code
+ * @returns The flag emoji for the country
+ */
+const getCountryFlag = (countryCode: string): string => {
+  // Convert alpha-3 to alpha-2 for emoji flags
+  const alpha2Mapping: { [key: string]: string } = {
+    'AUS': 'AU', 'AUT': 'AT', 'BEL': 'BE', 'CAN': 'CA', 'CHL': 'CL',
+    'COL': 'CO', 'CZE': 'CZ', 'DNK': 'DK', 'EST': 'EE', 'FIN': 'FI',
+    'FRA': 'FR', 'DEU': 'DE', 'GRC': 'GR', 'HUN': 'HU', 'ISL': 'IS',
+    'IRL': 'IE', 'ISR': 'IL', 'ITA': 'IT', 'JPN': 'JP', 'KOR': 'KR',
+    'LVA': 'LV', 'LTU': 'LT', 'LUX': 'LU', 'MEX': 'MX', 'NLD': 'NL',
+    'NZL': 'NZ', 'NOR': 'NO', 'POL': 'PL', 'PRT': 'PT', 'SVK': 'SK',
+    'SVN': 'SI', 'ESP': 'ES', 'SWE': 'SE', 'CHE': 'CH', 'TUR': 'TR',
+    'GBR': 'GB', 'USA': 'US'
+  };
+
+  const alpha2 = alpha2Mapping[countryCode] || countryCode.substring(0, 2);
+  
+  // Convert alpha-2 code to regional indicator symbols (flag emoji)
+  const offset = 127397; // Offset to convert ASCII to regional indicator symbols
+  const firstLetter = alpha2.charCodeAt(0) + offset;
+  const secondLetter = alpha2.charCodeAt(1) + offset;
+  
+  return String.fromCodePoint(firstLetter, secondLetter);
+};
+
 const SalarySimulator: React.FC = () => {
   // State for user inputs
   const [salaryEntries, setSalaryEntries] = useState<SalaryEntry[]>([
@@ -258,6 +286,43 @@ const SalarySimulator: React.FC = () => {
     }
   };
 
+  // Custom select component with flags for both selected value and dropdown options
+  const CountrySelectWithFlags = () => {
+    return (
+      <div className="relative">
+        <select
+          id="country"
+          value={selectedCountry}
+          onChange={(e) => setSelectedCountry(e.target.value)}
+          className="w-full p-3 pl-10 border-2 border-tropical-3 bg-white rounded-lg focus:ring-tropical-1 focus:border-tropical-1 shadow-sm text-base appearance-none"
+          aria-label="Select your country"
+        >
+          {COUNTRIES.map((country) => {
+            // Only include the flag emoji in the dropdown options, not in the selected text
+            const isSelected = country.code === selectedCountry;
+            return (
+              <option 
+                key={country.code} 
+                value={country.code}
+                className="flex items-center"
+              >
+                {!isSelected && getCountryFlag(country.code)} {country.name}
+              </option>
+            );
+          })}
+        </select>
+        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-xl">
+          {getCountryFlag(selectedCountry)}
+        </div>
+        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-tropical-2">
+          <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 111.414 1.414l-4 4a1 1 01-1.414 0l-4-4a1 1 010-1.414z" clipRule="evenodd" />
+          </svg>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="max-w-6xl mx-auto">
       {/* Hero section similar to home page */}
@@ -283,6 +348,13 @@ const SalarySimulator: React.FC = () => {
 
       <div className="mb-12 bg-white p-6 lg:p-8 rounded-2xl shadow-lg border border-tropical-3/20">
         <div className="inline-block px-4 py-1 rounded-full bg-tropical-5 text-white font-medium text-sm mb-4">SALARY SIMULATOR</div>
+        
+        <div className="mb-8 bg-tropical-3/10 p-6 rounded-xl border border-tropical-3/20">
+          <h3 className="text-xl font-bold mb-3 text-tropical-1">Where do you live?</h3>
+          <p className="mb-4 text-tropical-2">We'll use this to get accurate inflation data for your region.</p>
+          <CountrySelectWithFlags />
+        </div>
+        
         <h2 className="text-2xl font-bold mb-6 text-tropical-1">Enter Your Salary History</h2>
         
         <div className="mb-8 space-y-6">
@@ -348,25 +420,6 @@ const SalarySimulator: React.FC = () => {
             </svg>
             Add Another Salary Change
           </button>
-        </div>
-        
-        <div className="grid grid-cols-1 gap-6 mb-8">
-          <div className="bg-tropical-3/10 p-5 rounded-xl border border-tropical-3/20">
-            <label htmlFor="country" className="block text-sm font-bold text-tropical-1 mb-2">
-              Country
-            </label>
-            <select
-              id="country"
-              value={selectedCountry}
-              onChange={(e) => setSelectedCountry(e.target.value)}
-              className="w-full p-3 border-2 border-tropical-3 bg-white rounded-lg focus:ring-tropical-1 focus:border-tropical-1 shadow-sm"
-              aria-label="Select your country"
-            >
-              {COUNTRIES.map((country) => (
-                <option key={country.code} value={country.code}>{country.name}</option>
-              ))}
-            </select>
-          </div>
         </div>
         
         <button
