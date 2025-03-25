@@ -26,10 +26,6 @@ const SalarySimulator: React.FC = () => {
     { date: '2020-01', amount: 50000 } // TODO: Replace with country median salary
   ]);
   const [selectedCountry, setSelectedCountry] = useState('USA');
-  // TODO: Replace with a more dynamic way to set the default date range
-  // It should be based on the salary entries and the current date
-  const [startDate, setStartDate] = useState('2020-01');
-  const [endDate, setEndDate] = useState('2025-01');
   
   // State for results and loading
   const [loading, setLoading] = useState(false);
@@ -74,6 +70,35 @@ const SalarySimulator: React.FC = () => {
     setSalaryEntries(updatedEntries);
   };
   
+  // Helper function to determine the date range based on salary entries
+  const getDateRangeFromSalaryEntries = () => {
+    if (salaryEntries.length === 0) {
+      return { startDate: '', endDate: '' };
+    }
+    
+    // Sort entries by date to ensure we get the correct range
+    const sortedEntries = [...salaryEntries].sort((a, b) => a.date.localeCompare(b.date));
+    
+    // Get earliest date from salary entries
+    const earliestDate = sortedEntries[0].date;
+    
+    // Get latest date from salary entries or use current date + 3 months if the latest entry is in the past
+    const latestEntryDate = sortedEntries[sortedEntries.length - 1].date;
+    const currentDate = new Date();
+    const threeMonthsLater = new Date();
+    threeMonthsLater.setMonth(currentDate.getMonth() + 3);
+    
+    const latestEntryTimestamp = new Date(latestEntryDate).getTime();
+    const threeMonthsLaterTimestamp = threeMonthsLater.getTime();
+    
+    // Choose the later date between the latest entry and current date + 3 months
+    const endDate = latestEntryTimestamp > threeMonthsLaterTimestamp
+      ? latestEntryDate
+      : threeMonthsLater.toISOString().slice(0, 7);
+    
+    return { startDate: earliestDate, endDate };
+  };
+  
   // Fetch data and calculate results
   const calculateResults = async () => {
     try {
@@ -87,8 +112,15 @@ const SalarySimulator: React.FC = () => {
         throw new Error('Please add at least one salary entry');
       }
       
+      // Get date range from salary entries
+      const { startDate, endDate } = getDateRangeFromSalaryEntries();
+      
+      if (!startDate || !endDate) {
+        throw new Error('Could not determine date range from salary entries');
+      }
+      
       if (new Date(startDate) >= new Date(endDate)) {
-        throw new Error('End date must be after start date');
+        throw new Error('Start date must be before end date. Please check your salary entry dates.');
       }
       
       // Fetch inflation data
@@ -318,7 +350,7 @@ const SalarySimulator: React.FC = () => {
           </button>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 gap-6 mb-8">
           <div className="bg-tropical-3/10 p-5 rounded-xl border border-tropical-3/20">
             <label htmlFor="country" className="block text-sm font-bold text-tropical-1 mb-2">
               Country
@@ -334,34 +366,6 @@ const SalarySimulator: React.FC = () => {
                 <option key={country.code} value={country.code}>{country.name}</option>
               ))}
             </select>
-          </div>
-          
-          <div className="bg-tropical-3/10 p-5 rounded-xl border border-tropical-3/20">
-            <label htmlFor="start-date" className="block text-sm font-bold text-tropical-1 mb-2">
-              Start Date
-            </label>
-            <input
-              type="month"
-              id="start-date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              className="w-full p-3 border-2 border-tropical-3 rounded-lg focus:ring-tropical-1 focus:border-tropical-1 shadow-sm"
-              aria-label="Analysis start date"
-            />
-          </div>
-          
-          <div className="bg-tropical-3/10 p-5 rounded-xl border border-tropical-3/20">
-            <label htmlFor="end-date" className="block text-sm font-bold text-tropical-1 mb-2">
-              End Date
-            </label>
-            <input
-              type="month"
-              id="end-date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              className="w-full p-3 border-2 border-tropical-3 rounded-lg focus:ring-tropical-1 focus:border-tropical-1 shadow-sm"
-              aria-label="Analysis end date"
-            />
           </div>
         </div>
         
