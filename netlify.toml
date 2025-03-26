@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/data/*"
+  to = "https://sdmx.oecd.org/:splat"
+  status = 200
+  force = true
