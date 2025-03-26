@@ -55,28 +55,28 @@ export const COUNTRIES = [
 /**
  * Fetches inflation data from the OECD API
  * @param countryCode - The 3-letter country code (ISO 3166-1 alpha-3)
- * @param startDate - Start date in YYYY-MM format
- * @param endDate - End date in YYYY-MM format (defaults to current date)
+ * @param startMonth - Start date in YYYY-MM format
+ * @param endMonth - End date in YYYY-MM format (defaults to current date)
  * @returns Promise with the inflation data for the requested time period
  */
 export const fetchInflationData = async (
   countryCode: string,
-  startDate: string,
-  endDate: string = new Date().toISOString().slice(0, 7)
+  startMonth: string,
+  endMonth: string = new Date().toISOString().slice(0, 7)
 ): Promise<InflationData> => {
   try {
     // OECD API endpoint for inflation data (Consumer Price Index - CPI)
-    const url = new URL('https://stats.oecd.org/SDMX-JSON/data/PRICES_CPI/');
+    const basePath = '/data/public/rest/data/OECD.SDD.TPS,DSD_PRICES@DF_PRICES_ALL,1.0/';
     
     // Construct the API query
-    // Format: {COUNTRY_CODE}.CPALTT01.GY.M/all?startTime={START_DATE}&endTime={END_DATE}
+    // Format: {COUNTRY_CODE}.CPALTT01.GY.M/all?startPeriod={START_DATE}&endPeriod={END_DATE}
     // GY = Growth rate from same period of previous year
     // M = Monthly frequency
-    const path = `${countryCode}.CPALTT01.GY.M/all?startTime=${startDate}&endTime=${endDate}`;
-    url.pathname += path;
+    const path = `${countryCode}.M.N.CPI.IX._T.N.?startPeriod=${startMonth}&endPeriod=${endMonth}&dimensionAtObservation=AllDimensions&format=jsondata`;
+    const targetPath = `${basePath}${path}`;
     
-    // Call the API with appropriate headers
-    const response = await fetch(url.toString(), {
+    // Call the API
+    const response = await fetch(targetPath, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -90,7 +90,6 @@ export const fetchInflationData = async (
     const responseData = await response.json();
     
     // Parse the OECD SDMX-JSON response format
-    // This is a simplified parser - actual implementation may need to be more robust
     const parsedData = parseOECDResponse(responseData, countryCode);
     return parsedData;
   } catch (error) {
@@ -99,7 +98,7 @@ export const fetchInflationData = async (
     // Fallback to sample data if API call fails
     return {
       countryCode,
-      data: generateSampleInflationData(startDate, endDate),
+      data: generateSampleInflationData(startMonth, endMonth),
     };
   }
 };
@@ -108,31 +107,45 @@ export const fetchInflationData = async (
  * Parses the OECD API response into a simpler format
  * This is a simplified parser for the SDMX-JSON format
  */
-const parseOECDResponse = (data: any, countryCode: string): InflationData => {
+const parseOECDResponse = (response: any, countryCode: string): InflationData => {
   try {
-    const observations = data.dataSets[0].observations;
-    const timeFormat = data.structure.dimensions.observation.find((dim: any) => dim.id === 'TIME_PERIOD');
+    const observations = response.data.dataSets[0].observations;
+    const timeFormat = response.data.structures[0].dimensions.observation.find((dim: any) => dim.id === 'TIME_PERIOD');
     const times = timeFormat.values.map((v: any) => v.id);
-    
+    const cpiData: { date: string; value: number }[] = [];
+
+    let total = 0;
+    // Extract the CPI data points from the observations object
+    Object.entries(observations).forEach(([key, value]: [string, any]) => {
+      const indices = key.split(':');
+      const timeIndex = parseInt(indices[indices.length - 1], 10);
+
+      cpiData.push({
+        date: times[timeIndex],
+        value: value[0], // The CPI value
+      });
+      total += 1;
+    });
+
+    // Sort CPI data by date
+    cpiData.sort((a, b) => a.date.localeCompare(b.date));
+    // Calculate inflation rates from CPI data
     const result: InflationData = {
       countryCode,
       data: [],
     };
-    
-    // Extract the data points from the observations object
-    Object.entries(observations).forEach(([key, value]: [string, any]) => {
-      const indices = key.split(':');
-      const timeIndex = parseInt(indices[indices.length - 1], 10);
-      
+
+    for (let i = 1; i < cpiData.length; i++) {
+      const previousCPI = cpiData[i - 1].value;
+      const currentCPI = cpiData[i].value;
+      const inflationRate = ((currentCPI - previousCPI) / previousCPI) * 100;
+
       result.data.push({
-        date: times[timeIndex],
-        value: value[0], // The inflation value
+        date: cpiData[i].date,
+        value: parseFloat(inflationRate.toFixed(2)), // Inflation rate as a percentage
       });
-    });
-    
-    // Sort by date
-    result.data.sort((a, b) => a.date.localeCompare(b.date));
-    
+    }
+
     return result;
   } catch (error) {
     console.error('Error parsing OECD response:', error);
