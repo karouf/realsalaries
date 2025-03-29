@@ -567,55 +567,61 @@ const SalarySimulator: React.FC = () => {
           
           <div className="border-t-2 border-tropical-3/20 pt-8 mt-8">
             <h3 className="text-2xl font-bold mb-4 text-tropical-1">Learn More About Inflation</h3>
-            <div className="bg-gradient-to-br from-tropical-3/5 to-tropical-3/10 p-6 rounded-xl border border-tropical-3/20 mb-8">
-              <div className="space-y-4">
-                <div className="flex gap-3 items-center">
-                  <div className="bg-tropical-1 rounded-full p-2 text-white shrink-0">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-gradient-to-br from-tropical-3/5 to-tropical-3/10 p-6 rounded-xl border border-tropical-3/20 text-center">
+                <div className="flex justify-center mb-4">
+                  <div className="bg-tropical-1 rounded-full p-2 text-white">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
-                  <div>
-                    <strong className="text-tropical-1">What is inflation?</strong>
-                    <p>
-                      Inflation is the rate at which the general level of prices 
-                      for goods and services rises, leading to a decrease in purchasing power.
-                    </p>
-                  </div>
                 </div>
-                
-                <div className="flex gap-3 items-center">
-                  <div className="bg-tropical-5 rounded-full p-2 text-white shrink-0">
+                <div>
+                  <strong className="text-tropical-1 block mb-2">What is inflation?</strong>
+                  <p>
+                    Inflation is the rate at which the general level of prices 
+                    for goods and services rises, leading to a decrease in purchasing power.
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-tropical-3/5 to-tropical-3/10 p-6 rounded-xl border border-tropical-3/20 text-center">
+                <div className="flex justify-center mb-4">
+                  <div className="bg-tropical-5 rounded-full p-2 text-white">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
                   </div>
-                  <div>
-                    <strong className="text-tropical-1">How does it affect salaries?</strong>
-                    <p>
-                      When inflation outpaces salary growth, your 
-                      purchasing power decreases even if your nominal salary increases.
-                    </p>
-                  </div>
                 </div>
-                
-                <div className="flex gap-3 items-center">
-                  <div className="bg-tropical-4 rounded-full p-2 text-tropical-1 shrink-0">
+                <div>
+                  <strong className="text-tropical-1 block mb-2">How does it affect salaries?</strong>
+                  <p>
+                    When inflation outpaces salary growth, your 
+                    purchasing power decreases even if your nominal salary increases.
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-tropical-3/5 to-tropical-3/10 p-6 rounded-xl border border-tropical-3/20 text-center">
+                <div className="flex justify-center mb-4">
+                  <div className="bg-tropical-4 rounded-full p-2 text-tropical-1">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                   </div>
-                  <div>
-                    <strong className="text-tropical-1">What can you do?</strong>
-                    <p>
-                      Consider negotiating regular cost-of-living adjustments 
-                      in your salary, investing to offset inflation, and tracking your purchasing power over time.
-                    </p>
-                  </div>
+                </div>
+                <div>
+                  <strong className="text-tropical-1 block mb-2">What can you do?</strong>
+                  <p>
+                    Consider negotiating regular cost-of-living adjustments 
+                    in your salary, investing to offset inflation, and tracking your purchasing power over time.
+                  </p>
                 </div>
               </div>
             </div>
-            
+
+            <hr className="my-8 border-t-2 border-tropical-3/20" />
+
             <h3 className="text-2xl font-bold mb-4 text-tropical-1">Share Your Results</h3>
             {showRealSalary && results.length > 0 && (
               <p className="mb-6 text-tropical-2 p-4 bg-tropical-3/10 rounded-xl italic border-l-4 border-tropical-4">
