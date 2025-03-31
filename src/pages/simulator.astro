@@ -2,20 +2,19 @@
 import Layout from '../layouts/Layout.astro';
 import SalarySimulator from '../components/SalarySimulator.tsx';
 ---
-
 <Layout title="Inflation Impact Simulator - See how inflation affected your salary">
-  <main class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-6 text-center text-tropical-1">Salary Inflation Impact Simulator</h1>
-    <p class="text-lg mb-8 text-center max-w-3xl mx-auto text-tropical-2">
-      Enter your salary history and country to visualize how inflation has eroded your purchasing power over time.
-    </p>
-    
-    <div class="bg-white rounded-lg shadow-lg p-6 mb-10 border border-tropical-3/30">
+  <main>
+    <div class="container mx-auto px-4 py-8">
       <SalarySimulator client:load />
-    </div>
-    
-    <div class="text-center mt-10">
-      <a href="/" class="text-tropical-5 hover:text-tropical-1 hover:underline transition-colors">← Back to Home</a>
+      
+      <div class="flex justify-center mt-12 mb-8">
+        <a href="/" class="inline-block py-3 px-6 bg-white text-tropical-1 hover:text-tropical-5 border-2 border-tropical-3/30 rounded-lg shadow-md transition-all transform hover:-translate-y-1 font-medium flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Home
+        </a>
+      </div>
     </div>
   </main>
 </Layout>

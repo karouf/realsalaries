@@ -120,7 +120,7 @@ const QuickCalculator: React.FC = () => {
                 </div>
               </div>
               <p className="mt-3 text-sm text-tropical-4/90">
-                That's how much your ${originalSalary.toLocaleString()} from {year} is worth today
+                That's how much your ${originalSalary.toLocaleString()} from {year} are worth today
               </p>
             </div>
           ) : (
