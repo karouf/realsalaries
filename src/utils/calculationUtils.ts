@@ -65,14 +65,11 @@ export const calculateInflationAdjustedSalary = (
     }
     
     // Find the monthly inflation rate for the current month
-    const monthlyInflation = sortedInflationData.find(item => item.date === currentDateString);
+    const monthlyInflationRate = sortedInflationData.find(item => item.date === currentDateString);
     
     // Update the cumulative inflation factor
-    if (monthlyInflation) {
-      // Convert annual inflation percentage to monthly factor
-      // Note: This is a simplification. A more accurate approach would be to use compound interest formula
-      const monthlyInflationRate = monthlyInflation.value / 12 / 100;
-      cumulativeInflationFactor *= (1 + monthlyInflationRate);
+    if (monthlyInflationRate) {
+      cumulativeInflationFactor *= (1 + monthlyInflationRate.value / 100);
     }
     
     // Calculate real (inflation-adjusted) salary
