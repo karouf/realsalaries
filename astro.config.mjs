@@ -11,7 +11,7 @@ export default defineConfig({
     tailwind(),
     react(),
     matomo({
-      enabled: import.meta.env.ENV == "production", // Only load in production
+      enabled: import.meta.env.PROD, // Only load in production
       host: "https://analytics.realsalari.es",
       siteId: 1,
     }),
