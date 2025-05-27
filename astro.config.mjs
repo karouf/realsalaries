@@ -12,7 +12,7 @@ export default defineConfig({
     react(),
     matomo({
       enabled: import.meta.env.PROD, // Only load in production
-      host: "https://analytics.realsalari.es",
+      host: "https://analytics.realsalari.es/",
       siteId: 1,
     }),
   ]
